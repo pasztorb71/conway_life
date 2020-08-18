@@ -1,13 +1,10 @@
-.board {
-    height: 110px; 
-    width: 110px;
+#board {
     display: flex;
     flex-wrap: wrap;
-    margin: 0 1px 1px;
     background-color: grey;
 }
 
-.board div {
+#board div {
     height: 50px;
     width: 50px;
     border-bottom: 1px solid ;
