@@ -1,20 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
     let board = document.getElementById('board');
-    let squareSize = 50;
-    let width = Math.floor((window.innerWidth-5) / (squareSize + 1)) ;
-    let height = Math.floor((window.innerHeight-5) / (squareSize + 1)) ;
-    //let width = 5;
-    //let height = 5;
+    let squareSize = 50;    //size in pixel
     let squares = [];
 
-    let w = (width * squareSize) + width;
-    let h = (height *squareSize) + height;
-    board.style.width = w + "px";
-    board.style.height = h + "px";
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+
+    let width = Math.floor((windowWidth - 16)/ (squareSize + 1));
+    let height = Math.floor((windowHeight - 16)/ (squareSize + 1));
+
+    board.style.width = width * squareSize + width + "px";
+    board.style.height = height * squareSize + height + "px";
+
     for(let i = 0; i < width*height; i++) {
-        const square = document.createElement('div');
+        let square = document.createElement('div');
         square.setAttribute('id', i);
-        board.appendChild(square)
+        square.style.width = squareSize + "px";
+        square.style.height = squareSize + "px";
+        square.addEventListener('click', () => {
+            if (square.classList.contains('black')) 
+                square.classList.remove('black')
+            else 
+                square.classList.add('black');
+        })
+        board.appendChild(square);
         squares.push(square);     
     }
 
