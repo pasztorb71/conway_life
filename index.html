@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="life.css" />
     <script src="life.js"></script>
   </head>
-  <body>
+  <body onresize="resize()">
     <div class="container">
       <header id="lifeHeader">
         <h2>Conway's life simulator</h2>
@@ -23,26 +23,25 @@
           <p>Board initialization</p>
           Filling rate:
           <input type="text" id="frate" value="50" size="1" />%<br>
-          <button onclick="fillBoard()">Refill board</button>
+          <button onclick="fillBoard()" id="fillbutton" >Refill board</button>
         </div>
         <div id="speedcontrol" class="settings">
           <p>Animation control</p>
-          Change speed
+          Speed:
           <input type="text" id="speed" value="0.5" size="1" />sec
           <button onclick="setSpeed()">Ok</button><br><br>
-          <button onclick="fillBoard()">Refill board</button>
-          <button onclick="start(1000)">Start</button>
-          <button onclick="pause()">Pause</button>
-          <button onclick="resume(1000)">Resume</button>
-          <button onclick="stop()">Stop</button><br><br>
-          <button onclick="changeStatus()">Step one</button>
+          <button onclick="start(1000)" id="startbutton" disabled=true>Start</button>
+          <button onclick="stop()" id="stopbutton" disabled=true>Stop</button><br><br>
+          <button onclick="changeStatus()" id="stepbutton" disabled=true>Step one</button>
         </div>
       </nav>
       <main id="main">
         <div id="board"></div>
       </main>
       <footer>
-        <h2>Status:</h2>
+        <h2>Status:
+            <label id="state"></label>
+        </h2>
       </footer>
     </div>
     <div id="shadow_board"></div>

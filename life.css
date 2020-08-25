@@ -21,7 +21,7 @@ header {
 }
 nav {
   order: 2;
-  flex: 0 1 15%;
+  flex: 0 1 250px;
   height: 90%;
   background-color: whitesmoke;
 }
@@ -77,4 +77,8 @@ footer {
   display: flex;
   align-items: center;
   font-weight: bold;
+}
+
+#state {
+	color: yellow;
 }

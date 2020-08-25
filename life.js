@@ -4,6 +4,7 @@ let width = 0;
 let height = 0;
 let interval;
 let isStarted = false;
+let isFilled = false;
 let isPaused = false;
 let squareSize;    //size in pixel
 let speed = parseFloat(0.5);
@@ -11,6 +12,10 @@ let speed = parseFloat(0.5);
 document.addEventListener('DOMContentLoaded', () => {
     boardSetting();
 });
+
+function resize() {
+    document.location.reload(true);
+};
 
 function drawBoard() {
     squares = [];
@@ -123,27 +128,21 @@ function start() {
     if (!isStarted) {
         interval = setInterval(changeStatus, speed * 1000);
         isStarted = true;
+        document.getElementById('state').innerHTML = 'running';
+        document.getElementById("stopbutton").disabled = false;
+        document.getElementById("stepbutton").disabled = true;
+        document.getElementById("fillbutton").disabled = true;
     }
 }
 
-function pause() {
-    if (isStarted && !isPaused) {
-        clearInterval(interval);
-        isPaused = true;
-    }
-  }
-
-function resume(timer) {
-    if (isStarted && isPaused)  {
-        interval = setInterval(changeStatus, speed * 1000);
-        isPaused = false;
-    }
-}
-  
 function stop() {
     if (isStarted) {
         clearInterval(interval);
         isStarted = false;
+        document.getElementById('state').innerHTML = 'stopped';
+        document.getElementById("stepbutton").disabled = false;
+        document.getElementById("fillbutton").disabled = false;
+        document.getElementById("stopbutton").disabled = true;
     }
   }
 
@@ -156,6 +155,10 @@ function boardSetting() {
 function fillBoard() {
     let val = parseInt(document.getElementById("frate").value);
     fillRandom(Math.round(width*height*val/100));
+    isFilled = true;
+    document.getElementById('state').innerHTML = 'board filled';
+    document.getElementById('startbutton').disabled = false;
+    document.getElementById('stepbutton').disabled = false;
 }
 
 function setSpeed() {
