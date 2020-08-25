@@ -22,7 +22,7 @@
         <div id="boardfilling" class="settings">
           <p>Board initialization</p>
           Filling rate:
-          <input type="text" id="frate" value="50" size="1" />%<br>
+          <input type="text" id="frate" value="20" size="1" />%<br>
           <button onclick="fillBoard()" id="fillbutton" >Refill board</button>
         </div>
         <div id="speedcontrol" class="settings">
@@ -30,7 +30,7 @@
           Speed:
           <input type="text" id="speed" value="0.5" size="1" />sec
           <button onclick="setSpeed()">Ok</button><br><br>
-          <button onclick="start(1000)" id="startbutton" disabled=true>Start</button>
+          <button onclick="start()" id="startbutton" disabled=true>Start</button>
           <button onclick="stop()" id="stopbutton" disabled=true>Stop</button><br><br>
           <button onclick="changeStatus()" id="stepbutton" disabled=true>Step one</button>
         </div>

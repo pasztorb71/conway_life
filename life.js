@@ -11,6 +11,8 @@ let speed = parseFloat(0.5);
 
 document.addEventListener('DOMContentLoaded', () => {
     boardSetting();
+    fillBoard();
+    start();
 });
 
 function resize() {
@@ -132,6 +134,7 @@ function start() {
         document.getElementById("stopbutton").disabled = false;
         document.getElementById("stepbutton").disabled = true;
         document.getElementById("fillbutton").disabled = true;
+        document.getElementById("startbutton").disabled = true;
     }
 }
 
@@ -143,6 +146,7 @@ function stop() {
         document.getElementById("stepbutton").disabled = false;
         document.getElementById("fillbutton").disabled = false;
         document.getElementById("stopbutton").disabled = true;
+        document.getElementById("startbutton").disabled = false;
     }
   }
 
