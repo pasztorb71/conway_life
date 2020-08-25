@@ -1,24 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>App</title>
-    <link rel="stylesheet" href="life.css">
+    <link rel="stylesheet" href="life.css" />
     <script src="life.js"></script>
-</head>
-<body>
-    <header id="lifeHeader">
-        <button onclick="changestatus()">Switch</button>
-        <button onclick="neighbourCount()">count neighbours</button>
-        <button onclick="fillRandom(20)">Fill randomly</button>
-        <button onclick="start(1000)">Start</button>
-        <button onclick="pause()">Pause</button>
-        <button onclick="resume(1000)">Resume</button>
-        <button onclick="stop()">Stop</button>
-    </header>
-    <nav>aaaaaaaaaaaa</nav>
-    <div id="board"></div>
+  </head>
+  <body>
+    <div class="container">
+      <header id="lifeHeader">
+        <h2>Conway's life simulator</h2>
+      </header>
+      <nav>
+        <div id="boardsettings" class="settings">
+          <p>Board settings</p>
+          Square size:
+          <input type="text" id="squaresize" value="10" size="1" /><br>
+          <button onclick="boardSetting()">Submit</button>
+        </div>
+        <div id="boardfilling" class="settings">
+          <p>Board initialization</p>
+          Filling rate:
+          <input type="text" id="frate" value="50" size="1" />%<br>
+          <button onclick="fillBoard()">Refill board</button>
+        </div>
+        <div id="speedcontrol" class="settings">
+          <p>Animation control</p>
+          Change speed
+          <input type="text" id="speed" value="0.5" size="1" />sec
+          <button onclick="setSpeed()">Ok</button><br><br>
+          <button onclick="fillBoard()">Refill board</button>
+          <button onclick="start(1000)">Start</button>
+          <button onclick="pause()">Pause</button>
+          <button onclick="resume(1000)">Resume</button>
+          <button onclick="stop()">Stop</button><br><br>
+          <button onclick="changeStatus()">Step one</button>
+        </div>
+      </nav>
+      <main id="main">
+        <div id="board"></div>
+      </main>
+      <footer>
+        <h2>Status:</h2>
+      </footer>
+    </div>
     <div id="shadow_board"></div>
-</body>
+  </body>
 </html>

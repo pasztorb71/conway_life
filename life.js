@@ -5,19 +5,27 @@ let height = 0;
 let interval;
 let isStarted = false;
 let isPaused = false;
+let squareSize;    //size in pixel
+let speed = parseFloat(0.5);
 
 document.addEventListener('DOMContentLoaded', () => {
+    boardSetting();
+});
+
+function drawBoard() {
+    squares = [];
+    shadowSquares = [];
     let board = document.getElementById('board');
+    board.innerHTML = "";
     let shadowBoard = document.getElementById('shadow_board');
-    let squareSize = 50;    //size in pixel
+    shadowBoard.innerHTML = "";
+    let main = document.getElementById('main');
 
-    var windowWidth = window.innerWidth;
-    var windowHeight = window.innerHeight;
-    var headerHeight = document.getElementById('lifeHeader').clientHeight;
-    windowHeight = windowHeight - headerHeight;
+    var windowWidth = main.offsetWidth;
+    var windowHeight = main.offsetHeight;
 
-    width = Math.floor((windowWidth - 16)/ (squareSize + 1));
-    height = Math.floor((windowHeight - 16)/ (squareSize + 1));
+    width = Math.floor((windowWidth)/ (squareSize + 1));
+    height = Math.floor((windowHeight)/ (squareSize + 1));
 
     board.style.width = width * squareSize + width + "px";
     board.style.height = height * squareSize + height + "px";
@@ -47,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shadowBoard.appendChild(square);
         shadowSquares.push(square);     
     }
-});
+}
 
 function fillRandom(cnt) {
     let blackAmount = cnt;
@@ -58,6 +66,7 @@ function fillRandom(cnt) {
     const shuffledArray = gameArray.sort(() => Math.random() -0.5)
 
     for(let i = 0; i < squares.length; i++) {
+        squares[i].className = "";
         if (shuffledArray[i] == 'black') {
             squares[i].classList.add('black');
         }
@@ -65,7 +74,7 @@ function fillRandom(cnt) {
     neighbourCount();
 }
 
-function changestatus() {
+function changeStatus() {
     let cnt = 0;
     for (let i = 0; i < squares.length; i++) {
         shadowSquares[i].className = "";
@@ -110,10 +119,9 @@ function neighbourCount() {
     }
 }
 
-function start(timer) {
+function start() {
     if (!isStarted) {
-        fillRandom(50);
-        interval = setInterval(changestatus, timer);
+        interval = setInterval(changeStatus, speed * 1000);
         isStarted = true;
     }
 }
@@ -127,7 +135,7 @@ function pause() {
 
 function resume(timer) {
     if (isStarted && isPaused)  {
-        interval = setInterval(changestatus, timer);
+        interval = setInterval(changeStatus, speed * 1000);
         isPaused = false;
     }
 }
@@ -138,3 +146,23 @@ function stop() {
         isStarted = false;
     }
   }
+
+function boardSetting() {
+    let val = document.getElementById("squaresize");
+    squareSize = parseInt(val.value);
+    drawBoard();
+}  
+
+function fillBoard() {
+    let val = parseInt(document.getElementById("frate").value);
+    fillRandom(Math.round(width*height*val/100));
+}
+
+function setSpeed() {
+    speed = parseFloat(document.getElementById("speed").value);
+    if (isStarted) {
+        clearInterval(interval);
+        interval = setInterval(changeStatus, speed * 1000);
+        isStarted = true;
+    }
+}
