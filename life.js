@@ -8,6 +8,7 @@ let isFilled = false;
 let isPaused = false;
 let squareSize;    //size in pixel
 let speed = parseFloat(0.5);
+let isCyclic;
 
 document.addEventListener('DOMContentLoaded', () => {
     boardSetting();
@@ -50,6 +51,7 @@ function drawBoard() {
                 square.classList.remove('black')
             else 
                 square.classList.add('black');
+            neighbourCount();
         })
         board.appendChild(square);
         squares.push(square);     
@@ -69,7 +71,8 @@ function fillRandom(cnt) {
     //get shuffled game array with random blacks
     const blacksArray = Array(blackAmount).fill('black')
     const emptyArray = Array(width*height - blackAmount).fill('white')
-    const gameArray = emptyArray.concat(blacksArray)
+    //const gameArray = emptyArray.concat(blacksArray)
+    const gameArray = blacksArray.concat(emptyArray)
     const shuffledArray = gameArray.sort(() => Math.random() -0.5)
 
     for(let i = 0; i < squares.length; i++) {
@@ -111,16 +114,61 @@ function neighbourCount() {
         let cnt = 0;
         const isLeftEdge = (i % width === 0);
         const isRightEdge = (i % width === width -1);
-
+        if (!isCyclic) {
         //not in the edges
-        if (i > 0 && !isLeftEdge && squares[i -1].classList.contains('black')) cnt ++          //left
-        if (i >= width && !isRightEdge && squares[i +1 -width].classList.contains('black')) cnt ++  //above right
-        if (i >= width && squares[i -width].classList.contains('black')) cnt ++                    //above
-        if (i > width && !isLeftEdge && squares[i -1 -width].classList.contains('black')) cnt ++  //above left
-        if (i < squares.length-2 && !isRightEdge && squares[i +1].classList.contains('black')) cnt ++        //right
-        if (i < squares.length-width && !isLeftEdge && squares[i -1 +width].classList.contains('black')) cnt ++  //below left
-        if (i < squares.length-width-2 && !isRightEdge && squares[i +1 +width].classList.contains('black')) cnt ++ //below right
-        if (i < squares.length-width-1 && squares[i +width].classList.contains('black')) cnt ++   
+            if (i > 0 && !isLeftEdge && squares[i -1].classList.contains('black')) cnt ++                   //left
+            if (i >= width && !isRightEdge && squares[i +1 -width].classList.contains('black')) cnt ++      //above right
+            if (i >= width && squares[i -width].classList.contains('black')) cnt ++                         //above
+            if (i > width && !isLeftEdge && squares[i -1 -width].classList.contains('black')) cnt ++        //above left
+            if (i < squares.length-2 && !isRightEdge && squares[i +1].classList.contains('black')) cnt ++   //right
+            if (i < squares.length-width && !isLeftEdge && squares[i -1 +width].classList.contains('black')) cnt ++     //below left
+            if (i < squares.length-width-2 && !isRightEdge && squares[i +1 +width].classList.contains('black')) cnt ++  //below right
+            if (i < squares.length-width-1 && squares[i +width].classList.contains('black')) cnt ++         //below
+        }
+        else {
+            console.log(i);
+            if (!isLeftEdge && squares[i -1].classList.contains('black')) cnt ++                        //left
+            if (isLeftEdge && squares[i -1 + width].classList.contains('black')) cnt ++                 //left
+            
+            if (i == width-1)                                                                           //above right
+                 {if (squares[squares.length -width].classList.contains('black')) cnt ++}      
+            else if (i >= width) {
+                if (!isRightEdge) if (squares[i +1 -width].classList.contains('black')) cnt ++                 
+                if (isRightEdge) if (squares[i +1 -(width*2)].classList.contains('black')) cnt ++}
+            else 
+                if (squares[i +1 -width+squares.length].classList.contains('black')) cnt ++
+            
+            if (i >= width && squares[i -width].classList.contains('black')) cnt ++                     //above
+            if (i < width && squares[i -width+ squares.length].classList.contains('black')) cnt ++      //above
+            
+            if (i == 0)
+                {if (squares[squares.length -1].classList.contains('black')) cnt ++}                //above left    
+            else if (i >= width)                                                                             
+                {if (isLeftEdge && squares[i -1].classList.contains('black')) cnt ++
+                if (!isLeftEdge && squares[i -1 -width].classList.contains('black')) cnt ++}     
+            else 
+                if (squares[i -1 -width +squares.length].classList.contains('black')) cnt ++
+            
+            if (!isRightEdge && squares[i +1].classList.contains('black')) cnt ++   //right
+            if (isRightEdge && squares[i +1-width].classList.contains('black')) cnt ++                      //right
+            
+            if (i == squares.length-width)                                                           //below left
+                {if (squares[width -1].classList.contains('black')) cnt ++}       
+            else if (i < squares.length-width)
+                {if (isLeftEdge && squares[i -1 + (width*2)].classList.contains('black')) cnt ++
+                if (!isLeftEdge && squares[i -1 +width].classList.contains('black')) cnt ++}   
+            else if (squares[i -1 +width- squares.length].classList.contains('black')) cnt ++
+            
+            if (i == squares.length -1)                                                                     //below right
+                {if (squares[0].classList.contains('black')) cnt ++}
+            else if (i < squares.length-width)
+                {if (!isRightEdge && squares[i +1 +width].classList.contains('black')) cnt ++
+                if (isRightEdge && squares[i +1].classList.contains('black')) cnt ++}
+            else if (squares[i +1 + width -squares.length].classList.contains('black')) cnt ++
+
+            if (i < squares.length-width && squares[i +width].classList.contains('black')) cnt ++                   //below
+            if (i >= squares.length-width && squares[i +width-squares.length].classList.contains('black')) cnt ++   //below
+        }
         squares[i].setAttribute('data', cnt)                 
         //squares[i].innerHTML = cnt;
     }
@@ -134,6 +182,7 @@ function start() {
         document.getElementById("stopbutton").disabled = false;
         document.getElementById("stepbutton").disabled = true;
         document.getElementById("fillbutton").disabled = true;
+        document.getElementById("clearbutton").disabled = true;
         document.getElementById("startbutton").disabled = true;
     }
 }
@@ -145,6 +194,7 @@ function stop() {
         document.getElementById('state').innerHTML = 'stopped';
         document.getElementById("stepbutton").disabled = false;
         document.getElementById("fillbutton").disabled = false;
+        document.getElementById("clearbutton").disabled = false;
         document.getElementById("stopbutton").disabled = true;
         document.getElementById("startbutton").disabled = false;
     }
@@ -153,6 +203,7 @@ function stop() {
 function boardSetting() {
     let val = document.getElementById("squaresize");
     squareSize = parseInt(val.value);
+    isCyclic = document.getElementById('cyclic').value;
     drawBoard();
 }  
 
@@ -172,4 +223,15 @@ function setSpeed() {
         interval = setInterval(changeStatus, speed * 1000);
         isStarted = true;
     }
+}
+
+function cyclicBoard() {
+    isCyclic = document.getElementById('cyclic').checked;
+}
+
+function clearBoard() {
+    for(let i = 0; i < squares.length; i++) {
+        squares[i].className = "";
+    }
+    neighbourCount();
 }

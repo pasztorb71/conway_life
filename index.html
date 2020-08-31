@@ -16,14 +16,18 @@
         <div id="boardsettings" class="settings">
           <p>Board settings</p>
           Square size:
-          <input type="text" id="squaresize" value="10" size="1" /><br>
-          <button onclick="boardSetting()">Submit</button>
+          <input type="text" id="squaresize" value="50" size="1" /><br>
+          <button onclick="boardSetting()">Submit</button><br>
+          Cyclic board:
+          <input type="checkbox" id="cyclic" value="true" checked/><br>
+          <button onclick="cyclicBoard()">Submit</button>
         </div>
         <div id="boardfilling" class="settings">
           <p>Board initialization</p>
           Filling rate:
           <input type="text" id="frate" value="20" size="1" />%<br>
-          <button onclick="fillBoard()" id="fillbutton" >Refill board</button>
+          <button onclick="fillBoard()" id="fillbutton" >Refill board</button><br>
+          <button onclick="clearBoard()" id="clearbutton" >Clear board</button><br>
         </div>
         <div id="speedcontrol" class="settings">
           <p>Animation control</p>
